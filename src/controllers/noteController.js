@@ -107,7 +107,7 @@ const deleteNote = async (req, res) => {
         .send({ message: "You are unauthorized to perfrom this task" });
     }
 
-    const deleteNote = await noteModel.findByIdAndRemove(note);
+    const deleteNote = await noteModel.findByIdAndDelete(note);
 
     if (deleteNote) {
       return res.status(201).send({
