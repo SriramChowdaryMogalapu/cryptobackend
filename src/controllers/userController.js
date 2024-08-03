@@ -3,13 +3,6 @@ const bcrypt = require('bcryptjs');
 const {generateToken}=require("../utils/generateToken.js");
 const nodemailer = require('nodemailer');
 require('dotenv').config();
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  }
-});
 
 const userSignUp = async (req, res) => {
   try {
@@ -45,20 +38,6 @@ const userSignUp = async (req, res) => {
     });
 
     await newUser.save();
-
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: 'Registration Successful',
-      text: `Hello ${username},\n\nYou have successfully registered with us.\n\nBest regards,\nCrypto Notes Team`
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.error('Error sending email:', error);
-        return res.status(500).send({ message: 'User registered but failed to send email' });
-      }
-    });
     return res.status(201).send({
       status: true,
       name: newUser.name,
